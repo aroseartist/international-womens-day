@@ -27,7 +27,7 @@ def favicon():
 @app.route("/schedule.png")
 def schedule_img():
     return send_from_directory(os.path.join(app.root_path, "static", "imgs", "assests"),
-                               "speakers.jpg", mimetype="image/png")
+                               "speakers.png", mimetype="image/png")
 
 
 @app.route("/")
@@ -36,23 +36,21 @@ def index():
 
     random_speakers = selects_four_random_speakers(speakers_data)
 
-    return render_template("homepage2.html", random_speakers=random_speakers)
+    return render_template("homepage3.html", random_speakers=random_speakers)
 
 
 @app.route("/speakers")
 def speakers():
     """Speaker Page"""
-    print "*"*80
-    print speakers_data
+    _speakers_data = speakers_data[:22]
 
     return render_template("speakers.html",
-                            speaker_data=speakers_data)
+                            speaker_data=_speakers_data)
 
 
 @app.route("/schedule")
 def schedule():
     """Schedule Page"""
-    print talks
     if missing_data_talks:
         print "*"*80
         print "The following talks are don't have a track & time:"
@@ -74,8 +72,7 @@ def schedule():
 @app.route("/talks")
 def only_talks():
     """Talk Page"""
-    print speakers_data
-    _speakers_data = speakers_data[:-2]
+    _speakers_data = speakers_data[:17] + speakers_data[20:22]
 
     return render_template("talks.html",
                             speaker_data=_speakers_data)
@@ -94,6 +91,12 @@ def show_static_pdf():
     return send_file('static/imgs/assests/iwd-sponsorship-letter-2018.pdf')
 
 
+@app.route('/show/permission-form')
+def show_permission_pdf():
+
+    return send_file('static/imgs/assests/IWD-permission-form.pdf')
+
+
 @app.route("/organizers")
 def organizers():
     """Organizer's Page"""
@@ -108,11 +111,22 @@ def faq():
 
     return render_template("faq.html")
 
+
 @app.route("/sponsors")
 def sponsors():
     """Sponsors Page"""
 
     return render_template("sponsors.html")
+
+
+@app.route("/2018")
+def photo_2018():
+    """Photos from March 17, 2018"""
+
+    _speakers_data = speakers_data[:17]
+
+    return render_template("photos-2018.html",
+                            speaker_data=_speakers_data)
 
 
 if __name__ == "__main__":
